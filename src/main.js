@@ -45,6 +45,8 @@ const heuristic = (solved, board) => {
   let r = 0;
   for (let y = 0; y < board.length; y++) {
     for (let x = 0; x < board[y].length; x++) {
+      // don't include blank tile in calculation
+      if (board[y][x] == 0) continue;
       const [sy, sx] = find(solved, board[y][x]);
       r += Math.abs(y - sy) + Math.abs(x - sx);
     }
@@ -85,16 +87,14 @@ const slidePuzzle = board => {
       const newPath = [...path, b[y][x]];
       const newBoard = applyMove(b, zero, [y, x]);
       const key = JSON.stringify(newBoard);
+
+      if (visited.has(key)) continue;
+
+      if (key == solvedKey) return newPath;
+
       const cost = newPath.length + heuristic(solved, newBoard);
-
-      if (key == solvedKey) {
-        return newPath;
-      }
-
-      if (!visited.has(key)) {
-        const e = [newBoard, newPath, cost];
-        sortedInsert(queue, e);
-      }
+      const e = [newBoard, newPath, cost];
+      sortedInsert(queue, e);
       visited.add(key);
     }
   }

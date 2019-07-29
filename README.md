@@ -22,9 +22,13 @@ Current Implementation is a BFS w/ cost heuristics calculated by summing all til
 
 - [x] better heuristic?
 - [x] better way of sorting by insertion instead of whole queue?
+
   - [x] binary search for insertion point
     - [x] refactor
     - [x] figure out how to apply to queue
+
+- [ ] check for solvability
+- [ ] "manual" method of rows/blocks at a time?
 
 ### Progress
 
