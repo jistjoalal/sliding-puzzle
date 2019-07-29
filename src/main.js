@@ -133,9 +133,7 @@ const slidePuzzle = board => {
 module.exports = {
   solve,
   find,
-  neighbors,
-  slidePuzzle,
   applyMove,
-  inversions,
+  slidePuzzle,
   isSolvable
 };
