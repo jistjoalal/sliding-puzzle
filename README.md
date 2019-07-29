@@ -27,11 +27,13 @@ Current Implementation is a BFS w/ cost heuristics calculated by summing all til
     - [x] refactor
     - [x] figure out how to apply to queue
 
-- [ ] check for solvability
-- [ ] "manual" method of rows/blocks at a time?
+* [ ] accumulate heuristic cost by calculating initial heuristic
+* [ ] check for solvability
+* [ ] "manual" method of rows/blocks at a time?
 
 ### Progress
 
 - BFS is slow, `b2`: 4x4, ~14 moves deep
 - improved enough to beat `b2` in .5s, still very slow
 - now solving `b2` in .1s, still no `b3`
+- up to `b3` (5x5) in .2s w/ solid priority queue insertion

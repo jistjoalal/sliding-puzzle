@@ -40,21 +40,6 @@ describe("neighbors", () => {
   });
 });
 
-describe("insertIdx", () => {
-  it("returns insert idx for 3 into [1,2,4,5]", () => {
-    const list = [1, 2, 4, 5];
-    const exp = 2;
-    const res = insertIdx(list, 3);
-    assert.deepEqual(res, exp);
-  });
-  it("returns insert idx for 37 into [1,2,4,5,33,49,51,52,53,54,65,66,71,89]", () => {
-    const list = [1, 2, 4, 5, 22, 33, 49, 51, 52, 53, 54, 65, 66, 71, 89];
-    const exp = 6;
-    const res = insertIdx(list, 37);
-    assert.deepEqual(res, exp);
-  });
-});
-
 describe("slidePuzzle", function() {
   this.timeout(10000);
   testSolution("b0");

@@ -59,41 +59,40 @@ const insertIdx = (list, e) => {
   let t = list.length - 1;
   while (h <= t) {
     let mid = ~~((h + t) / 2);
-    if (e == list[mid]) return mid;
-    else if (e > list[mid]) h = mid + 1;
+    if (e.cost == list[mid].cost) return mid;
+    else if (e.cost > list[mid].cost) h = mid + 1;
     else t = mid - 1;
   }
   return h;
 };
 
 const sortedInsert = (queue, e) => {
-  const costs = queue.map(v => v[2]);
-  const idx = insertIdx(costs, e[2]);
+  const idx = insertIdx(queue, e);
   queue.splice(idx, 0, e);
 };
 
 const slidePuzzle = board => {
   const solved = solve(board);
   const solvedKey = JSON.stringify(solved);
-  let queue = [[board, [], Infinity]];
+  let queue = [{ board, path: [], cost: Infinity }];
   let visited = new Set([JSON.stringify(board)]);
 
   while (queue.length) {
-    const [b, path] = queue.shift();
+    const curr = queue.shift();
 
-    const zero = find(b, 0);
-    const moves = neighbors(b, zero);
+    const zero = find(curr.board, 0);
+    const moves = neighbors(curr.board, zero);
     for (let [y, x] of moves) {
-      const newPath = [...path, b[y][x]];
-      const newBoard = applyMove(b, zero, [y, x]);
-      const key = JSON.stringify(newBoard);
+      const path = [...curr.path, curr.board[y][x]];
+      const board = applyMove(curr.board, zero, [y, x]);
+      const key = JSON.stringify(board);
 
       if (visited.has(key)) continue;
 
-      if (key == solvedKey) return newPath;
+      if (key == solvedKey) return path;
 
-      const cost = newPath.length + heuristic(solved, newBoard);
-      const e = [newBoard, newPath, cost];
+      const cost = heuristic(solved, board);
+      const e = { board, path, cost };
       sortedInsert(queue, e);
       visited.add(key);
     }
