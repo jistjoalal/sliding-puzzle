@@ -1,5 +1,7 @@
 const rng = n => [...Array(n).keys()];
 
+const flat = arr => arr.reduce((a, c) => [...a, ...c], []);
+
 const print = b => {
   for (let row of b) {
     console.log(row.join` `.replace(/(\b\d\b)/g, " $1"));
@@ -71,7 +73,34 @@ const sortedInsert = (queue, e) => {
   queue.splice(idx, 0, e);
 };
 
+const inversions = board => {
+  let count = 0;
+  let tiles = flat(board);
+  for (let i = 0; i < tiles.length; i++) {
+    for (let j = i + 1; j < tiles.length; j++) {
+      if (tiles[i] && tiles[j] && tiles[i] > tiles[j]) {
+        count++;
+      }
+    }
+  }
+  return count;
+};
+
+const isSolvable = board => {
+  const invs = inversions(board);
+  const size = board.length;
+  const [row] = find(board, 0);
+  if (size % 2 && invs % 2 == 0) return true;
+  if (size % 2 == 0) {
+    if (row % 2 != invs % 2) return true;
+  }
+  return false;
+};
+
 const slidePuzzle = board => {
+  const solvable = isSolvable(board);
+  if (!solvable) return null;
+
   const solved = solve(board);
   const solvedKey = JSON.stringify(solved);
   let queue = [{ board, path: [], cost: Infinity }];
@@ -106,6 +135,7 @@ module.exports = {
   find,
   neighbors,
   slidePuzzle,
-  insertIdx,
-  applyMove
+  applyMove,
+  inversions,
+  isSolvable
 };
