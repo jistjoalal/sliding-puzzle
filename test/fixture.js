@@ -13,8 +13,10 @@ const b3 = [
 ];
 
 module.exports = {
-  b0,
-  b1,
-  b2,
-  b3
+  boards: {
+    b0,
+    b1,
+    b2,
+    b3
+  }
 };

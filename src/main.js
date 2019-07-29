@@ -1,5 +1,3 @@
-const { b0, b1, b2, b3 } = require("../test/fixture");
-
 const rng = n => [...Array(n).keys()];
 
 const print = b => {
@@ -45,44 +43,40 @@ const applyMove = (b, [zy, zx], [y, x]) => {
 
 const heuristic = (solved, board) => {
   let r = 0;
-  // print(solved);
-  // print(board);
   for (let y = 0; y < board.length; y++) {
     for (let x = 0; x < board[y].length; x++) {
       const [sy, sx] = find(solved, board[y][x]);
-      // console.log(y, x, sy, sx);
       r += Math.abs(y - sy) + Math.abs(x - sx);
     }
   }
   return r;
 };
 
-const binaryInsert = (list, e) => {
-  if (list.length == 0) return [e];
-  if (list.length == 1) {
-    if (e >= list[0]) return [list[0], e];
-    return [e, list[0]];
+const insertIdx = (list, e) => {
+  let h = 0;
+  let t = list.length - 1;
+  while (h <= t) {
+    let mid = ~~((h + t) / 2);
+    if (e == list[mid]) return mid;
+    else if (e > list[mid]) h = mid + 1;
+    else t = mid - 1;
   }
-  const midIdx = ~~(list.length / 2);
-  const mid = list[midIdx];
-  const next = list[midIdx + 1];
-  const left = list.slice(0, midIdx);
-  const right = list.slice(midIdx + 1);
-  if (mid <= e && next >= e) {
-    return [...left, mid, e, ...right];
-  }
-  if (mid > e) return [...binaryInsert(left, e), mid, ...right];
-  if (mid < e) return [...left, mid, ...binaryInsert(right, e)];
+  return h;
+};
+
+const sortedInsert = (queue, e) => {
+  const costs = queue.map(v => v[2]);
+  const idx = insertIdx(costs, e[2]);
+  queue.splice(idx, 0, e);
 };
 
 const slidePuzzle = board => {
   const solved = solve(board);
   const solvedKey = JSON.stringify(solved);
   let queue = [[board, [], Infinity]];
-  const visited = new Set([JSON.stringify(board)]);
+  let visited = new Set([JSON.stringify(board)]);
 
   while (queue.length) {
-    queue.sort((a, b) => a[2] - b[2]);
     const [b, path] = queue.shift();
 
     const zero = find(b, 0);
@@ -91,15 +85,15 @@ const slidePuzzle = board => {
       const newPath = [...path, b[y][x]];
       const newBoard = applyMove(b, zero, [y, x]);
       const key = JSON.stringify(newBoard);
-      const cost = heuristic(solved, b);
+      const cost = newPath.length + heuristic(solved, newBoard);
 
       if (key == solvedKey) {
         return newPath;
       }
 
       if (!visited.has(key)) {
-        queue.push([newBoard, newPath, cost]);
-        // queue = sortedInsert(queue, e);
+        const e = [newBoard, newPath, cost];
+        sortedInsert(queue, e);
       }
       visited.add(key);
     }
@@ -108,25 +102,11 @@ const slidePuzzle = board => {
   return [];
 };
 
-const run = b => {
-  console.log();
-  print(b);
-  console.time("runtime");
-  const t = slidePuzzle(b);
-  console.log(t);
-  console.timeEnd("runtime");
-  console.log();
-};
-
-// run(b0);
-// run(b1);
-// run(b2);
-// run(b3);
-
 module.exports = {
   solve,
   find,
   neighbors,
   slidePuzzle,
-  binaryInsert
+  insertIdx,
+  applyMove
 };

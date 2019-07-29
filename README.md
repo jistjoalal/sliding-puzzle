@@ -6,7 +6,7 @@ Learning advanced graph traversal with the famous sliding puzzle.
 
 ## Notes
 
-Current Implementation is a BFS w/ cost heuristics calculated by summing all tile's distances to their solved position (x + y). A naive approach of applying the heuristic helped me solve the 4x4. Next, we try a binary search insertion method into the queue.
+Current Implementation is a BFS w/ cost heuristics calculated by summing all tile's distances to their solved position (x + y). Binary search insertion and including the current path length in the heuristic sped up 4x4 solves, but we still can't do bigger puzzles.
 
 - [x] generate solved key
 - [x] `queue = [ [ board, moves ] ]`
@@ -20,15 +20,14 @@ Current Implementation is a BFS w/ cost heuristics calculated by summing all til
     - [x] return if `JSON.stringify(b) == solved`
     - [x] push to queue
 
+- [x] better heuristic?
+- [x] better way of sorting by insertion instead of whole queue?
+  - [x] binary search for insertion point
+    - [x] refactor
+    - [x] figure out how to apply to queue
+
+### Progress
+
 - BFS is slow, `b2`: 4x4, ~14 moves deep
 - improved enough to beat `b2` in .5s, still very slow
-
-- [ ] better heuristic?
-- [ ] better way of sorting by insertion instead of whole queue?
-  - [x] binary search for insertion point
-    - [ ] refactor
-    - [ ] figure out how to apply to queue
-      - [ ] insert into `queue.map(v => v[2])` (return index)
-        - [ ] use index to insert queue element
-      - [ ] or just write custom func that digs through to the cost
-        - [ ] rewrite queue elements as objects?
+- now solving `b2` in .1s, still no `b3`
