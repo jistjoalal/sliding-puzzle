@@ -35,8 +35,8 @@ function moveTiles(board, tiles, targets, doNotDisturb) {
 function solveGroup(board, group) {
   let sumPath = [];
   let dnd = [];
-  const lastSize = Math.ceil(group.length / 2);
-  for (let i = 0; i < group.length - lastSize; i++) {
+  const saveForLastSize = Math.ceil(group.length / 2);
+  for (let i = 0; i < group.length - saveForLastSize; i++) {
     const tile = group[i];
     const target = tileSolvedPos(board, tile);
     const path = moveTiles(board, [tile], [target], dnd);
@@ -44,9 +44,9 @@ function solveGroup(board, group) {
     dnd.push(tile);
     sumPath.push(...path);
   }
-  const lastTwo = group.slice(-lastSize);
-  const targets = lastTwo.map(tile => tileSolvedPos(board, tile));
-  const path = moveTiles(board, lastTwo, targets, dnd);
+  const saveForLast = group.slice(-saveForLastSize);
+  const targets = saveForLast.map(tile => tileSolvedPos(board, tile));
+  const path = moveTiles(board, saveForLast, targets, dnd);
   sumPath.push(...path);
   return sumPath;
 }
