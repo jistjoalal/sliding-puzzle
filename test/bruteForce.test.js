@@ -1,15 +1,13 @@
 const assert = require("assert");
 const { boards } = require("./fixture");
 
-const {
-  solve,
-  find,
-  applyMove,
-  slidePuzzle,
-  isSolvable
-} = require("../src/main");
+const { solve, isSolvable } = require("../src/helpers");
 
-describe("slidePuzzle", function() {
+const { bruteForce } = require("../src/bruteForce");
+
+const { runSolution } = require("./testHelpers");
+
+describe("bruteForce", function() {
   this.timeout(10000);
   for (let i in boards) {
     testSolution(i);
@@ -21,7 +19,7 @@ function testSolution(b) {
   const size = board.length;
   it(`solves board ${b} (${size}x${size})`, () => {
     const solvable = isSolvable(board);
-    const solution = slidePuzzle(board);
+    const solution = bruteForce(board);
     if (!solvable) {
       assert.equal(solution, null);
     } else {
@@ -30,11 +28,4 @@ function testSolution(b) {
       assert.deepEqual(res, exp);
     }
   });
-}
-
-function runSolution(board, solution) {
-  for (let move of solution) {
-    board = applyMove(board, find(board, 0), find(board, move));
-  }
-  return board;
 }

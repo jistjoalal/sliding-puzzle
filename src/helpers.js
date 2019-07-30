@@ -43,14 +43,23 @@ const applyMove = (b, [zy, zx], [y, x]) => {
   return r;
 };
 
-const heuristic = (solved, board) => {
+const tileHeuristic = (board, tile, [y, x]) => {
+  const size = board.length;
+  const sy = ~~((tile - 1) / size);
+  const sx = (tile - 1) % size;
+  const cost = Math.abs(y - sy) + Math.abs(x - sx);
+  return cost;
+};
+
+const heuristic = board => {
+  const size = board.length;
   let r = 0;
-  for (let y = 0; y < board.length; y++) {
-    for (let x = 0; x < board[y].length; x++) {
+  for (let y = 0; y < size; y++) {
+    for (let x = 0; x < size; x++) {
+      const tile = board[y][x];
       // don't include blank tile in calculation
-      if (board[y][x] == 0) continue;
-      const [sy, sx] = find(solved, board[y][x]);
-      r += Math.abs(y - sy) + Math.abs(x - sx);
+      if (tile == 0) continue;
+      r += tileHeuristic(board, tile, [y, x]);
     }
   }
   return r;
@@ -97,48 +106,13 @@ const isSolvable = board => {
   return false;
 };
 
-const slidePuzzle = board => {
-  // check solvability
-  const solvable = isSolvable(board);
-  if (!solvable) return null;
-
-  // init
-  const solved = solve(board);
-  const solvedKey = JSON.stringify(solved);
-  let queue = [{ board, path: [], cost: Infinity }];
-  let visited = new Set([JSON.stringify(board)]);
-
-  while (queue.length) {
-    const curr = queue.shift();
-
-    // get moves from this state
-    const zero = find(curr.board, 0);
-    const moves = neighbors(curr.board, zero);
-    for (let [y, x] of moves) {
-      // get new state
-      const path = [...curr.path, curr.board[y][x]];
-      const board = applyMove(curr.board, zero, [y, x]);
-      const key = JSON.stringify(board);
-
-      // already visited
-      if (visited.has(key)) continue;
-      visited.add(key);
-
-      // solution
-      if (key == solvedKey) return path;
-
-      // score new state, add to queue
-      const cost = heuristic(solved, board);
-      const e = { board, path, cost };
-      sortedInsert(queue, e);
-    }
-  }
-};
-
 module.exports = {
   solve,
   find,
   applyMove,
-  slidePuzzle,
-  isSolvable
+  isSolvable,
+  neighbors,
+  sortedInsert,
+  tileHeuristic,
+  heuristic
 };

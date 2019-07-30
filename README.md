@@ -4,6 +4,11 @@ Learning advanced graph traversal with the famous sliding puzzle.
 
 ![puzzle](https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/15-puzzle_magical.svg/220px-15-puzzle_magical.svg.png)
 
+## Links
+
+- [Implementing A-star(A\*) to solve N-Puzzle](https://algorithmsinsight.wordpress.com/graph-theory-2/a-star-in-general/implementing-a-star-to-solve-n-puzzle/)
+- [How to check if an instance of 15 puzzle is solvable?](https://www.geeksforgeeks.org/check-instance-15-puzzle-solvable/)
+
 ## Notes
 
 Current Implementation is a BFS w/ cost heuristics calculated by summing all tile's distances to their solved position (x + y). Binary search insertion and including the current path length in the heuristic sped up 4x4 solves, but we still can't do bigger puzzles.
@@ -20,7 +25,6 @@ Current Implementation is a BFS w/ cost heuristics calculated by summing all til
     - [x] return if `JSON.stringify(b) == solved`
     - [x] push to queue
 
-- [x] better heuristic?
 - [x] better way of sorting by insertion instead of whole queue?
 
   - [x] binary search for insertion point
@@ -31,8 +35,14 @@ Current Implementation is a BFS w/ cost heuristics calculated by summing all til
   - [x] count # inversions
   - [x] check solvability:
 
-- [ ] accumulate heuristic cost by calculating initial heuristic
+- [x] better heuristic?
+
+  - [x] taxicab/manhattan distance
+
 - [ ] "manual" method of rows/blocks at a time?
+  - [ ] solve 1st row and col, repeat
+    - [x] move pieces to destination
+      - [ ] specifying excluded tiles from moves
 
 ### Progress
 
