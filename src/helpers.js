@@ -47,7 +47,7 @@ function applyMove(b, [zy, zx], [y, x]) {
   return r;
 }
 
-function tileHeuristic(board, tile, [y, x]) {
+function tileTaxiDist(board, tile, [y, x]) {
   const size = board.length;
   const sy = ~~((tile - 1) / size);
   const sx = (tile - 1) % size;
@@ -55,7 +55,7 @@ function tileHeuristic(board, tile, [y, x]) {
   return cost;
 }
 
-function heuristic(board) {
+function boardTaxiDist(board) {
   const size = board.length;
   let r = 0;
   for (let y = 0; y < size; y++) {
@@ -63,7 +63,7 @@ function heuristic(board) {
       const tile = board[y][x];
       // don't include blank tile in calculation
       if (tile == 0) continue;
-      r += tileHeuristic(board, tile, [y, x]);
+      r += tileTaxiDist(board, tile, [y, x]);
     }
   }
   return r;
@@ -110,6 +110,38 @@ function isSolvable(board) {
   return false;
 }
 
+function graphSearch(board, endTest, heuristic) {
+  // init
+  let queue = [{ board, path: [], cost: Infinity }];
+  let visited = new Set([JSON.stringify(board)]);
+
+  while (queue.length) {
+    const curr = queue.shift();
+
+    // get moves from this state
+    const zero = find(curr.board, 0);
+    const moves = neighbors(curr.board, zero);
+    for (let [y, x] of moves) {
+      // get new state
+      const path = [...curr.path, curr.board[y][x]];
+      const board = applyMove(curr.board, zero, [y, x]);
+      const key = JSON.stringify(board);
+
+      // already visited
+      if (visited.has(key)) continue;
+      visited.add(key);
+
+      // solution
+      if (endTest(board)) return path;
+
+      // score new state, add to queue
+      const cost = heuristic(board, path);
+      const e = { board, path, cost };
+      sortedInsert(queue, e);
+    }
+  }
+}
+
 module.exports = {
   solve,
   find,
@@ -117,7 +149,8 @@ module.exports = {
   isSolvable,
   neighbors,
   sortedInsert,
-  tileHeuristic,
-  heuristic,
-  print
+  tileTaxiDist,
+  boardTaxiDist,
+  print,
+  graphSearch
 };
