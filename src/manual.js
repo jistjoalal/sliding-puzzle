@@ -6,7 +6,7 @@ const {
   applyMove
 } = require("./helpers");
 
-const moveTo = (board, tile, [y, x]) => {
+function moveTo(board, tile, [y, x]) {
   // init
   const target = JSON.stringify([y, x]);
   let queue = [{ board, path: [], cost: Infinity }];
@@ -38,7 +38,7 @@ const moveTo = (board, tile, [y, x]) => {
       sortedInsert(queue, e);
     }
   }
-};
+}
 
 module.exports = {
   moveTo

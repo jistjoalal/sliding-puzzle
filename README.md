@@ -40,9 +40,12 @@ Current Implementation is a BFS w/ cost heuristics calculated by summing all til
   - [x] taxicab/manhattan distance
 
 - [ ] "manual" method of rows/blocks at a time?
+
   - [ ] solve 1st row and col, repeat
     - [x] move pieces to destination
       - [ ] specifying excluded tiles from moves
+
+- [ ] abstract graph search using HOFs for solution and heuristic tests
 
 ### Progress
 

@@ -8,7 +8,7 @@ const {
   sortedInsert
 } = require("./helpers");
 
-const bruteForce = board => {
+function bruteForce(board) {
   // check solvability
   const solvable = isSolvable(board);
   if (!solvable) return null;
@@ -44,7 +44,7 @@ const bruteForce = board => {
       sortedInsert(queue, e);
     }
   }
-};
+}
 
 module.exports = {
   bruteForce
