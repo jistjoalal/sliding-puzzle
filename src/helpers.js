@@ -47,10 +47,15 @@ function applyMove(b, [zy, zx], [y, x]) {
   return r;
 }
 
-function tileTaxiDist(board, tile, [y, x]) {
+function tileSolvedPos(board, tile) {
   const size = board.length;
   const sy = ~~((tile - 1) / size);
   const sx = (tile - 1) % size;
+  return [sy, sx];
+}
+
+function tileTaxiDist(board, tile, [y, x]) {
+  const [sy, sx] = tileSolvedPos(board, tile);
   const cost = Math.abs(y - sy) + Math.abs(x - sx);
   return cost;
 }
@@ -128,6 +133,9 @@ function graphSearch(board, endTest, heuristic, abandonTest) {
       const board = applyMove(curr.board, zero, [y, x]);
       const key = JSON.stringify(board);
 
+      // console.log();
+      // print(board);
+
       // already visited
       if (visited.has(key) || abandonTest(at)) continue;
       visited.add(key);
@@ -144,6 +152,13 @@ function graphSearch(board, endTest, heuristic, abandonTest) {
   return [];
 }
 
+function runSolution(board, solution) {
+  for (let move of solution) {
+    board = applyMove(board, find(board, 0), find(board, move));
+  }
+  return board;
+}
+
 module.exports = {
   solve,
   find,
@@ -151,8 +166,10 @@ module.exports = {
   isSolvable,
   neighbors,
   sortedInsert,
+  tileSolvedPos,
   tileTaxiDist,
   boardTaxiDist,
   print,
-  graphSearch
+  graphSearch,
+  runSolution
 };

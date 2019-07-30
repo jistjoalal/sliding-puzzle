@@ -44,6 +44,9 @@ Current Implementation is a BFS w/ cost heuristics calculated by summing all til
   - [ ] solve 1st row and col, repeat
     - [x] move pieces to destination
       - [x] specifying excluded tiles from moves
+    - we wrote a `solveGroup` method which attempts the manual method by moving pieces at a time w/ graphSearch
+    - it sucks
+    - need a more precise method of moving individual tiles into place
 
 - [x] abstract graph search using HOFs for solution and heuristic tests
 

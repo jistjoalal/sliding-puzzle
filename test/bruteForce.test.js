@@ -1,11 +1,9 @@
 const assert = require("assert");
 const { boards } = require("./fixture");
 
-const { solve, isSolvable } = require("../src/helpers");
+const { solve, isSolvable, runSolution } = require("../src/helpers");
 
 const { bruteForce } = require("../src/bruteForce");
-
-const { runSolution } = require("./testHelpers");
 
 describe("bruteForce", function() {
   this.timeout(10000);
