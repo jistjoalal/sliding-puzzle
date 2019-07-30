@@ -1,16 +1,26 @@
 const { find, tileTaxiDist, graphSearch } = require("./helpers");
 
-function moveTo(board, tile, [y, x]) {
+function moveTiles(board, tiles, targets, doNotDisturb) {
   // init
-  const target = JSON.stringify([y, x]);
-  const endTest = board => JSON.stringify(find(board, tile)) == target;
-  const heuristic = (board, path) =>
-    path.length + tileTaxiDist(board, tile, [y, x]);
+  const endTest = board => {
+    for (let i = 0; i < tiles.length; i++) {
+      if (JSON.stringify(find(board, tiles[i])) != JSON.stringify(targets[i]))
+        return false;
+    }
+    return true;
+  };
+  const heuristic = (board, path) => {
+    const dist = tiles.reduce(
+      (a, tile, i) => a + tileTaxiDist(board, tile, targets[i])
+    );
+    return path.length + dist;
+  };
+  const abandonTest = node => new Set(doNotDisturb).has(node);
 
   // search
-  return graphSearch(board, endTest, heuristic);
+  return graphSearch(board, endTest, heuristic, abandonTest);
 }
 
 module.exports = {
-  moveTo
+  moveTiles
 };

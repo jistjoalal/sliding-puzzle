@@ -7,9 +7,10 @@ function bruteForce(board) {
   // init
   const solvedKey = JSON.stringify(solve(board));
   const endTest = curr => JSON.stringify(curr) == solvedKey;
+  const abandonTest = _ => false;
 
   // search
-  return graphSearch(board, endTest, boardTaxiDist);
+  return graphSearch(board, endTest, boardTaxiDist, abandonTest);
 }
 
 module.exports = {

@@ -110,7 +110,7 @@ function isSolvable(board) {
   return false;
 }
 
-function graphSearch(board, endTest, heuristic) {
+function graphSearch(board, endTest, heuristic, abandonTest) {
   // init
   let queue = [{ board, path: [], cost: Infinity }];
   let visited = new Set([JSON.stringify(board)]);
@@ -123,12 +123,13 @@ function graphSearch(board, endTest, heuristic) {
     const moves = neighbors(curr.board, zero);
     for (let [y, x] of moves) {
       // get new state
-      const path = [...curr.path, curr.board[y][x]];
+      const at = curr.board[y][x];
+      const path = [...curr.path, at];
       const board = applyMove(curr.board, zero, [y, x]);
       const key = JSON.stringify(board);
 
       // already visited
-      if (visited.has(key)) continue;
+      if (visited.has(key) || abandonTest(at)) continue;
       visited.add(key);
 
       // solution
@@ -140,6 +141,7 @@ function graphSearch(board, endTest, heuristic) {
       sortedInsert(queue, e);
     }
   }
+  return [];
 }
 
 module.exports = {

@@ -43,9 +43,9 @@ Current Implementation is a BFS w/ cost heuristics calculated by summing all til
 
   - [ ] solve 1st row and col, repeat
     - [x] move pieces to destination
-      - [ ] specifying excluded tiles from moves
+      - [x] specifying excluded tiles from moves
 
-- [ ] abstract graph search using HOFs for solution and heuristic tests
+- [x] abstract graph search using HOFs for solution and heuristic tests
 
 ### Progress
 
