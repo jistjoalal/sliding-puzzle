@@ -89,6 +89,22 @@ function insertIdx(list, e) {
 function sortedInsert(queue, e) {
   const idx = insertIdx(queue, e);
   queue.splice(idx, 0, e);
+
+  // cut tail
+  const cutIdx = ~~(queue.length * 0.97);
+  const remove = queue.length - cutIdx - 1;
+  queue.splice(cutIdx, remove);
+}
+
+function shuffle(arr) {
+  let r = [...arr];
+  for (let i = 0; i < r.length; i++) {
+    const swapIdx = ~~(Math.random() * r.length);
+    const t = r[i];
+    r[i] = r[swapIdx];
+    r[swapIdx] = t;
+  }
+  return r;
 }
 
 function inversions(board) {
@@ -125,7 +141,9 @@ function graphSearch(board, endTest, heuristic, abandonTest) {
 
     // get moves from this state
     const zero = find(curr.board, 0);
-    const moves = neighbors(curr.board, zero);
+    const moves = shuffle(neighbors(curr.board, zero));
+    // const moves = neighbors(curr.board, zero);
+
     for (let [y, x] of moves) {
       // get new state
       const at = curr.board[y][x];

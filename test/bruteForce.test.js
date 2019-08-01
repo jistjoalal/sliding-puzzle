@@ -7,7 +7,7 @@ const { bruteForce } = require("../src/bruteForce");
 
 describe("bruteForce", function() {
   this.timeout(10000);
-  for (let i in "01234") {
+  for (let i in boards) {
     testSolution(i);
   }
 });

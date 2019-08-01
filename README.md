@@ -57,3 +57,4 @@ Current Implementation is a BFS w/ cost heuristics calculated by summing all til
 - now solving `b2` in .1s, still no `b3`
 - up to `b3` (5x5) in .2s w/ solid priority queue insertion
 - solves 5x5's pretty quick, still too slow
+- up to 6x6, barely by shuffling neighbors and pruning queue
