@@ -4,6 +4,8 @@ Learning advanced graph traversal with the famous sliding puzzle.
 
 ![puzzle](https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/15-puzzle_magical.svg/220px-15-puzzle_magical.svg.png)
 
+[Blog Post](https://jist-blog.netlify.com/blog/slide)
+
 ## Links
 
 - [Implementing A-star(A\*) to solve N-Puzzle](https://algorithmsinsight.wordpress.com/graph-theory-2/a-star-in-general/implementing-a-star-to-solve-n-puzzle/)
